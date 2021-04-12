@@ -25,10 +25,12 @@ class Performance(unittest.TestCase):
         self.delta = time.time()
 
     def step1(self):
+        self.createstart = time.time()
         guildreader.create_file(self.bot, "test", {"A": 10, "B": [1,2,3,4]}, wipe=True)
         self.create = time.time()
 
     def step2(self):
+        self.readstart = time.time()
         for guild in self.bot.guilds:
             data = guildreader.read_file(guild.id, "test")
             assert data["A"] == 10
@@ -36,6 +38,7 @@ class Performance(unittest.TestCase):
         self.read = time.time()
 
     def step3(self):
+        self.writestart = time.time()
         for guild in self.bot.guilds:
             data = guildreader.read_file(guild.id, "test")
             data["A"] = 80
@@ -44,6 +47,7 @@ class Performance(unittest.TestCase):
         self.write = time.time()
 
     def step4(self):
+        self.rereadstart = time.time()
         for guild in self.bot.guilds:
             data = guildreader.read_file(guild.id, "test")
             assert data["A"] == 80
@@ -59,12 +63,11 @@ class Performance(unittest.TestCase):
         for name, step in self._steps():
             step()
 
-        curtime = time.time()
-        print(f"Total: {curtime-self.delta} Seconds")
-        print(f"Create: {curtime - self.create} Seconds")
-        print(f"Read: {curtime - self.read} Seconds")
-        print(f"Write: {curtime - self.write} Seconds")
-        print(f"Reread: {curtime - self.reread} Seconds")
+        print(f"Total: {time.time()-self.delta} Seconds")
+        print(f"Create: {self.create - self.createstart} Seconds")
+        print(f"Read: {self.read - self.readstart} Seconds")
+        print(f"Write: {self.write - self.writestart} Seconds")
+        print(f"Reread: {self.reread - self.rereadstart} Seconds")
 
 
 if __name__ == '__main__':
