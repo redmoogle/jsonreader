@@ -2,7 +2,7 @@
 handles json files
 """
 
-import ujson as json
+import orjson as json
 from pathlib import Path
 
 
