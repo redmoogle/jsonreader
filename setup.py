@@ -4,7 +4,7 @@ with open("README.md", "r") as file:
     long_description = file.read()
 
 setuptools.setup(
-    name='jsonreader',
+    name='guildreader',
     version='1.0.0',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
@@ -15,8 +15,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: GNU V3",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+        'License :: OSI Approved :: MIT License',
+        "Operating System :: OS Independent"
     ],
     python_requires='>=3.5'
 )
