@@ -16,7 +16,7 @@ class FakeBot:
     def __init__(self):
         self.guilds = []
         self.delta = time.time()
-        for _ in range(10000):
+        for _ in range(7500):
             self.guilds += [FakeGuild()]
 
 
@@ -54,7 +54,7 @@ class Performance(unittest.TestCase):
     def test_steps(self):
         for name, step in self._steps():
             step()
-        print(f"{time.time()-delta} Seconds")
+        print(f"{time.time()-self.delta} Seconds")
 
 
 if __name__ == '__main__':
