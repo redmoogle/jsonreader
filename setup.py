@@ -14,7 +14,7 @@ setuptools.setup(
     url='https://github.com/redmoogle/jsonreader',
     packages=setuptools.find_packages(),
     install_requires=[
-        'orjson'
+        'ujson'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
