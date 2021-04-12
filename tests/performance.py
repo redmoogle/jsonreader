@@ -5,7 +5,7 @@ Ensures it can read and write to the file
 import guildreader
 import unittest
 import random
-
+import time
 
 class FakeGuild:
     def __init__(self):
@@ -15,6 +15,7 @@ class FakeGuild:
 class FakeBot:
     def __init__(self):
         self.guilds = []
+        self.delta = time.time()
         for _ in range(10000):
             self.guilds += [FakeGuild()]
 
@@ -53,6 +54,7 @@ class Performance(unittest.TestCase):
     def test_steps(self):
         for name, step in self._steps():
             step()
+        print(f"{time.time()-delta} Seconds")
 
 
 if __name__ == '__main__':
