@@ -44,3 +44,4 @@ jobs:
       - name: Test with unittest
         run: |
           python3 -m unittest tests/readwrite.py
+          python3 -m unittest tests/performance.py
