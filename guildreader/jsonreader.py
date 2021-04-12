@@ -29,7 +29,7 @@ def create_file(bot, key: str, default, wipe: bool = False):
         data[_guild] = default
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dumps(data, fileout, indent=4)
+        json.dump(data, fileout, indent=4)
     return True
 
 
@@ -51,7 +51,7 @@ def read_file(guild, key: str):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.loads(filein)
+        data = json.load(filein)
 
     return data[guild]
 
@@ -75,12 +75,12 @@ def write_file(guild, key: str, value):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.loads(filein)
+        data = json.load(filein)
 
     data[guild] = value
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dumps(data, fileout, indent=4)
+        json.dump(data, fileout, indent=4)
     return True
 
 
@@ -102,12 +102,12 @@ def remove(guild, key: str):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.loads(filein)
+        data = json.load(filein)
 
     data.pop(guild)
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dumps(data, fileout, indent=4)
+        json.dump(data, fileout, indent=4)
 
     return True
 
@@ -138,6 +138,6 @@ def dump(key: str):
     data = {}
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.loads(filein)
+        data = json.load(filein)
 
     return data
