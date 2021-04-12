@@ -44,5 +44,5 @@ jobs:
       - name: Test with unittest
         run: |
           cd tests
-          python3 -m unittest tests/readwrite
+          python3 -m unittest tests/readwrite.py
           cd ..
