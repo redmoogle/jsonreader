@@ -2,7 +2,7 @@
 handles json files
 """
 
-import json
+import ujson as json
 from pathlib import Path
 
 
@@ -29,7 +29,7 @@ def create_file(bot, key: str, default, wipe: bool = False):
         data[_guild] = default
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dump(data, fileout, indent=4)
+        json.dumps(data, fileout, indent=4)
     return True
 
 
@@ -51,7 +51,7 @@ def read_file(guild, key: str):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
+        data = json.loads(filein)
 
     return data[guild]
 
@@ -75,12 +75,12 @@ def write_file(guild, key: str, value):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
+        data = json.loads(filein)
 
     data[guild] = value
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dump(data, fileout, indent=4)
+        json.dumps(data, fileout, indent=4)
     return True
 
 
@@ -102,12 +102,12 @@ def remove(guild, key: str):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
+        data = json.loads(filein)
 
     data.pop(guild)
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dump(data, fileout, indent=4)
+        json.dumps(data, fileout, indent=4)
 
     return True
 
@@ -138,6 +138,6 @@ def dump(key: str):
     data = {}
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
+        data = json.loads(filein)
 
     return data
