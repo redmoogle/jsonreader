@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name='guildreader',
-    version='1.0.0',
+    version='1.1.0',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
     description='DiscordPy Guild Data Management Module',
@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url='https://github.com/redmoogle/jsonreader',
     packages=setuptools.find_packages(),
+    install_requires=[
+        'ujson'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         'License :: OSI Approved :: MIT License',
