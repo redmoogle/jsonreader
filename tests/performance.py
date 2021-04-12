@@ -30,8 +30,8 @@ class Performance(unittest.TestCase):
     def step2(self):
         for guild in self.bot.guilds:
             data = guildreader.read_file(guild.id, "test")
-            assert data["A"] = 10
-            assert data["B"] = [1,2,3,4]
+            assert data["A"] == 10
+            assert data["B"] == [1,2,3,4]
 
     def step3(self):
         for guild in self.bot.guilds:
@@ -43,8 +43,8 @@ class Performance(unittest.TestCase):
     def step4(self):
         for guild in self.bot.guilds:
             data = guildreader.read_file(guild.id, "test")
-            assert data["A"] = 80
-            assert data["B"] = [1,2,3,4,5,6,8,9,10]
+            assert data["A"] == 80
+            assert data["B"] == [1,2,3,4,5,6,8,9,10]
 
     def _steps(self):
         for name in dir(self):  # dir() result is implicitly sorted
