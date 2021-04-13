@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name='guildreader',
-    version='1.1.2',
+    version='1.1.3',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
     description='DiscordPy Guild Data Management Module',
