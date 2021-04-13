@@ -1,0 +1,35 @@
+# Checks if the module works correctly and checks performance
+
+name: "Test Module and Check Performance"
+on:
+  # Triggers the workflow on push
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 
+
+      # Installs and upgrades pip, installs other dependencies and installs the package from setup.py
+      - name: "Upgrades pip"
+        run: |
+          python3 -m pip install --upgrade pip
+
+      - name: "Install Dependencies"
+        run: |
+          python3 -m pip install setuptools wheel twine
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python3 setup.py install
+
+      - name: "Test with unittest"
+        run: |
+          python3 -m unittest tests/readwrite.py
+
+      - name: "Check Performance"
+        run: |
+          python3 -m unittest tests/performance.py
