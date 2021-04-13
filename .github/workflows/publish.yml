@@ -1,19 +1,12 @@
-# This is a basic workflow to help you get started with Actions
-name: Test & Upload to TestPyPI
-# Controls when the action will run. 
+# Tests then Publishes to PyPi
+name: "Test & Upload to PyPi"
 on:
-  # Triggers the workflow on push to the master branch
   push:
     branches: [ master ]
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -22,27 +15,24 @@ jobs:
         with:
           python-version: 3.8 
       # Installs and upgrades pip, installs other dependencies and installs the package from setup.py
-      - name: "Installs and upgrades pip, installs other dependencies and installs the package from setup.py"
+      - name: "Upgrade Pip"
         run: |
-          # Upgrade pip
           python3 -m pip install --upgrade pip
-          # Install build deps
+      - name: "Install Requirements"
           python3 -m pip install setuptools wheel twine
-          # If requirements.txt exists, install from it
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Install the package from setup.py
           python3 setup.py install
-      # Tests with unittest
-      - name: Test with unittest
+      # Checks if it correctly modifies data and checks performance
+      - name: "Test Package"
         run: |
           python3 -m unittest tests/readwrite.py
-          python3 -m unittest tests/performance.py
-      # Upload to TestPyPI
-      - name: Build
+      # Build for upload
+      - name: "Build"
         run: |
           python3 setup.py sdist bdist_wheel
-          
-      - name: Publish package
+
+      # Uploads to PyPi
+      - name: "Publish package"
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
