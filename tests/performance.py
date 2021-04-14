@@ -73,7 +73,7 @@ class Performance(unittest.TestCase):
         data = guildreader.read_file(self.bot.guilds[0].id, "test")
         data["A"] = 80
         data["B"] = [1, 2, 3, 4, 5, 6, 8, 9, 10]
-        guildreader.write_file(self.bot.guilds[0], "test", data)
+        guildreader.write_file(self.bot.guilds[0].id, "test", data)
         print(f'Single Write Time: {time.time() - delta} seconds...')
 
     def step8(self):
