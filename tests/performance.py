@@ -58,14 +58,14 @@ class Performance(unittest.TestCase):
 
     def step5(self):
         delta = time.time()
-        data = guildreader.read_file(self.bot.guilds[0], "test")
+        data = guildreader.read_file(self.bot.guilds[0].id, "test")
         assert data["A"] == 10
         assert data["B"] == [1, 2, 3, 4]
         print(f'Single Read Time: {time.time() - delta} seconds...')
 
     def step6(self):
         delta = time.time()
-        data = guildreader.read_file(self.bot.guilds[0], "test")
+        data = guildreader.read_file(self.bot.guilds[0].id, "test")
         data["A"] = 80
         data["B"] = [1, 2, 3, 4, 5, 6, 8, 9, 10]
         guildreader.write_file(self.bot.guilds[0], "test", data)
@@ -73,7 +73,7 @@ class Performance(unittest.TestCase):
 
     def step7(self):
         delta = time.time()
-        data = guildreader.read_file(self.bot.guilds[0], "test")
+        data = guildreader.read_file(self.bot.guilds[0].id, "test")
         assert data["A"] == 80
         assert data["B"] == [1, 2, 3, 4, 5, 6, 8, 9, 10]
         print(f'Single Reread Time: {time.time() - delta} seconds...')
