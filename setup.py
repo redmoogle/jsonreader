@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name='guildreader',
-    version='1.1.3',
+    version='1.1.4',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
     description='DiscordPy Guild Data Management Module',
@@ -17,6 +17,9 @@ setuptools.setup(
         'ujson'
     ],
     classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
         "Programming Language :: Python :: 3",
         'License :: OSI Approved :: MIT License',
         "Operating System :: OS Independent"
