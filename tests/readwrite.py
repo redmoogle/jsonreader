@@ -9,7 +9,7 @@ import random
 
 class FakeGuild:
     def __init__(self):
-        self.id = random.randint(1, 1000)
+        self.id = random.randint(111111111, 999999999)
 
 
 class FakeBot:

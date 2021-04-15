@@ -10,7 +10,7 @@ import time
 
 class FakeGuild:
     def __init__(self):
-        self.id = random.randint(1, 999999999)
+        self.id = random.randint(111111111, 999999999)
 
 
 class FakeBot:
