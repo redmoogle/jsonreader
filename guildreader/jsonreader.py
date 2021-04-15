@@ -41,7 +41,7 @@ def read_file(guild: str, key: str):
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        return json.load(filein)[guild]
+        return (json.load(filein))[guild]
 
 
 def write_file(guild: str, key: str, value):
