@@ -28,7 +28,7 @@ def create_file(bot, key: str, default, wipe: bool = False):
     return True
 
 
-def read_file(guild: str, key: str):
+def read_file(guild, key: str):
     """
     Reads a JSON file given the ID to find and key to look in
         Parameters:
@@ -44,7 +44,7 @@ def read_file(guild: str, key: str):
         return (json.load(filein))[str(guild)]
 
 
-def write_file(guild: str, key: str, value):
+def write_file(guild, key: str, value):
     """
     Writes data to a guild JSON given a key
         Parameters:
@@ -59,13 +59,13 @@ def write_file(guild: str, key: str, value):
         return False
     with open(f'./data/guild_{key}.json', 'r') as filein:
         data = json.load(filein)
-        data[guild] = value
+        data[str(guild)] = value
         with open(f'./data/guild_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
     return True
 
 
-def remove(guild: str, key: str):
+def remove(guild, key: str):
     """
     Removes a guild from a given key
         Parameters:
@@ -79,7 +79,7 @@ def remove(guild: str, key: str):
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
         data = json.load(filein)
-        data.pop(guild)
+        data.pop(str(guild))
         with open(f'./data/guild_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
     return True
