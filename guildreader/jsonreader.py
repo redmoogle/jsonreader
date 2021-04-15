@@ -17,21 +17,18 @@ def create_file(bot, key: str, default, wipe: bool = False):
         Returns:
             Success (bool): Did it succeed
     """
-    if Path(f'./data/guild_{key}.json').is_file() and not wipe: # allows for wiping of the config
+    if Path(f'./data/guild_{key}.json').is_file() and not wipe:  # allows for wiping of the config
         return False
 
     data = {}
-
     for guild in bot.guilds:
-        _guild = str(guild.id)
-        data[_guild] = default
-
+        data[str(guild.id)] = default
     with open(f'./data/guild_{key}.json', 'w') as fileout:
         json.dump(data, fileout, indent=4)
     return True
 
 
-def read_file(guild, key: str):
+def read_file(guild: str, key: str):
     """
     Reads a JSON file given the ID to find and key to look in
         Parameters:
@@ -40,19 +37,14 @@ def read_file(guild, key: str):
         Returns:
             data(any): The data for that guild and key
     """
-    data = {}
-    guild = str(guild)
-
     if not Path(f'./data/guild_{key}.json').is_file():
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
-
-    return data[guild]
+        return json.load(filein)[guild]
 
 
-def write_file(guild, key: str, value):
+def write_file(guild: str, key: str, value):
     """
     Writes data to a guild JSON given a key
         Parameters:
@@ -62,23 +54,18 @@ def write_file(guild, key: str, value):
         Returns:
             Success (bool): Did it succeed
     """
-    data = {}
-    guild = str(guild)
 
     if not Path(f'./data/guild_{key}.json').is_file():
         return False
-
     with open(f'./data/guild_{key}.json', 'r') as filein:
         data = json.load(filein)
-
-    data[guild] = value
-
-    with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dump(data, fileout, indent=4)
+        data[guild] = value
+        with open(f'./data/guild_{key}.json', 'w') as fileout:
+            json.dump(data, fileout, indent=4)
     return True
 
 
-def remove(guild, key: str):
+def remove(guild: str, key: str):
     """
     Removes a guild from a given key
         Parameters:
@@ -87,20 +74,14 @@ def remove(guild, key: str):
         Returns:
             Success (bool): Did it succeed
     """
-    data = {}
-    guild = str(guild)
-
     if not Path(f'./data/guild_{key}.json').is_file():
         return False
 
     with open(f'./data/guild_{key}.json', 'r') as filein:
         data = json.load(filein)
-
-    data.pop(guild)
-
-    with open(f'./data/guild_{key}.json', 'w') as fileout:
-        json.dump(data, fileout, indent=4)
-
+        data.pop(guild)
+        with open(f'./data/guild_{key}.json', 'w') as fileout:
+            json.dump(data, fileout, indent=4)
     return True
 
 
@@ -123,9 +104,5 @@ def dump(key: str):
         Returns:
             data (dict): The JSON data
     """
-    data = {}
-
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        data = json.load(filein)
-
-    return data
+        return json.load(filein)
