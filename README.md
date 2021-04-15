@@ -55,6 +55,21 @@ guildreader.write_file(ctx.guild.id, "mutes", data)
 * key: File/Key to read
 * value: Modified Value
 
+### modify()
+
+ex.
+```
+guildreader.write_file(ctx.guild.id, "mutes", USER, time.time+300)
+```
+
+#### Modifies a keys item for a guild in place
+#### Returns: Success(T/F)
+
+* guild: ID of the guild
+* key: File/Key to read
+* item: key value to modify
+* value: Modified Value
+
 ### remove()
 
 #### Remove a guild from a Key
@@ -78,10 +93,11 @@ if(guildreader.check_exists("mutes"))
 #### Checks if a Key exists
 #### Returns: Success(T/F)
 
-* key: Check the existance of a key/file
+* key: Check the existence of a key/file
 
 ### dump()
 
+ex.
 ```
 json = guildreader.dump("mutes")
 ```

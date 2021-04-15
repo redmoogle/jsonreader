@@ -19,6 +19,7 @@ class FakeBot:
             self.guilds += [FakeGuild()]
 
 
+# noinspection PyAttributeOutsideInit
 class ReadWrite(unittest.TestCase):
     def setUp(self):
         self.bot = FakeBot()

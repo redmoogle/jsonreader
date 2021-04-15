@@ -39,9 +39,8 @@ def read_file(guild, key: str):
     """
     if not Path(f'./data/guild_{key}.json').is_file():
         return False
-
     with open(f'./data/guild_{key}.json', 'r') as filein:
-        return (json.load(filein))[str(guild)]
+        return json.load(filein)[str(guild)]
 
 
 def write_file(guild, key: str, value):
@@ -60,6 +59,27 @@ def write_file(guild, key: str, value):
     with open(f'./data/guild_{key}.json', 'r') as filein:
         data = json.load(filein)
         data[str(guild)] = value
+        with open(f'./data/guild_{key}.json', 'w') as fileout:
+            json.dump(data, fileout, indent=4)
+    return True
+
+
+def modify(guild, key: str, item, value):
+    """
+    Modifies data in place for the given guild, key, and item
+        Parameters:
+            guild (str/int): ID of the guild
+            key (str): The key to modify
+            item (any): JSON key to modify
+            value (any): The value to write the item
+        Returns:
+            Success (bool): Did it succeed
+    """
+    if not Path(f'./data/guild_{key}.json').is_file():
+        return False
+    with open(f'./data/guild_{key}.json', 'r') as filein:
+        data = json.load(filein)
+        data[str(str(guild.id))][item] = value
         with open(f'./data/guild_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
     return True
