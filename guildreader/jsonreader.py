@@ -34,6 +34,7 @@ class Reader:
                 Success (bool): Did it succeed
         """
         if Path(f'{self.directory}/data_{key}.json').is_file() and not wipe: # allows for wiping of the config
+            logging.debug(f'Detected {key} but file exist and wipe flag is not set')
             return False
 
         data = {}
@@ -46,6 +47,7 @@ class Reader:
 
         with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
+        logging.debug(f'Created {key} using {default} as the default')
         return True
 
     def read_file(self, id, key: str):
@@ -69,6 +71,7 @@ class Reader:
         try:
             return data[id]
         except KeyError:
+            logging.debug(f'Repairing {id} for {key}')
             self._repair_id(id, key)
 
     def _repair_id(self, id, key):
@@ -86,6 +89,7 @@ class Reader:
 
         with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
+        logging.debug(f'Repaired {id} for {key} succesfully')
         return True
 
     def write_file(self, id, key: str, value):
