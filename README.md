@@ -1,14 +1,9 @@
 # JSON READER:
-#### DiscordPy GuildData Management Module
-
-## Important Info:
-
-A /data folder must exist
+#### JSON Data Management Module
 
 ## Common Terms:
 
-key: file name to save/pull from (Stored as guild_KEY.json)
-guild: ID of the guild (automatically turned into a string)
+key: file name to save/pull from (Stored as data_[key].json)
 
 ## Functions
 

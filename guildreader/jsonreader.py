@@ -6,7 +6,7 @@ import ujson as json
 from pathlib import Path
 
 
-def create_file(bot, key: str, default, wipe: bool = False):
+def create_file(ids, key: str, default, wipe: bool = False, defaultdir = '/data'):
     """
     Creates a JSON config file for all guilds it can see with a default
         Parameters:
@@ -17,14 +17,14 @@ def create_file(bot, key: str, default, wipe: bool = False):
         Returns:
             Success (bool): Did it succeed
     """
-    if Path(f'./data/guild_{key}.json').is_file() and not wipe: # allows for wiping of the config
+    if Path(f'.{defaultdir}/guild_{key}.json').is_file() and not wipe: # allows for wiping of the config
         return False
 
     data = {}
 
-    for guild in bot.guilds:
-        _guild = str(guild.id)
-        data[_guild] = default
+    for id in ids:
+        _id = str(id)
+        data[_id] = default
 
     with open(f'./data/guild_{key}.json', 'w') as fileout:
         json.dump(data, fileout, indent=4)
