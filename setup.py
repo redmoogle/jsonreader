@@ -8,7 +8,7 @@ setuptools.setup(
     version='2.0.0',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
-    description='DiscordPy Guild Data Management Module',
+    description='JSON Data Management Module',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/redmoogle/jsonreader',
