@@ -62,7 +62,7 @@ class Performance(unittest.TestCase):
 
     def step5(self):
         delta = time.time()
-        self.reader.create_file(self.bot, "test", {"A": 10, "B": [1, 2, 3, 4]}, wipe=True)
+        self.reader.create_file("test", {"A": 10, "B": [1, 2, 3, 4]}, wipe=True)
         print(f'Recreation Time: {time.time()-delta} seconds...')
 
     def step6(self):
