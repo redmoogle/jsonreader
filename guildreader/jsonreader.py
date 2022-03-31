@@ -163,5 +163,3 @@ class Reader:
             data = json.load(filein)
 
         return data
-
-Reader(".\\test")
