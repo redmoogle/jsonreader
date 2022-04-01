@@ -11,7 +11,7 @@ except ImportError:  # Fall back
     import json
 
 class Reader:
-    def __init__(self, directory: str, ids: list) -> None:
+    def __init__(self, directory: str, ids: list = list()) -> None:
         if not (Path(directory).exists() and Path(directory).is_dir()):
             Path(directory).mkdir(parents=True) # Create the directories if needed
         self.directory = directory
@@ -20,8 +20,87 @@ class Reader:
         self._ids = ids
         self.__defaults = {}
 
+    def _repair_id(self, id, key):
+        """
+        Inits a ID in a key with the default value
+        """
+        id = str(id)
+        if not Path(f'{self.directory}/data_{key}.json').is_file():
+            logging.error(f'{self.directory}/data_{key}.json does not exist')
+            return False
+
+        with open(f'{self.directory}/data_{key}.json', 'r') as filein:
+            data = json.load(filein)
+
+        data[id] = self.__defaults[key]
+
+        with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
+            json.dump(data, fileout, indent=4)
+        logging.warn(f'Repaired {id} for {key} succesfully')
+        return True
+
+    def _file_check(self, key):
+        if not Path(f'{self.directory}/data_{key}.json').is_file():
+            logging.error(f'{self.directory}/data_{key}.json does not exist')
+            return False
+        return True
+
     def update_ids(self, ids: list):
-        self._ids = ids # Update ID list
+        """
+        Overwrite ID list
+            Parameters:
+                ids (list): list to overwrite with
+            Raises:
+                SyntaxError if not list
+        """
+        if isinstance(ids, list):
+            self._ids = ids # Update ID list
+        else:
+            raise SyntaxError(f"Expected `list` got {type(ids)}")
+
+    def add_ids(self, ids: list):
+        """
+        Adds specified IDs
+            Parameters:
+                ids (list): IDs to add
+            Raises:
+                SyntaxError if not list
+        """
+        if isinstance(ids, list):
+            for _id in ids:
+                self._ids.append(_id)
+        else:
+            raise SyntaxError(f"Expected `list` got {type(ids)}")
+
+    def add_id(self, id):
+        """
+        Adds a specified ID
+            Parameters:
+                id (any): ID to add
+        """
+        self._ids.append(id)
+
+    def remove_ids(self, ids):
+        """
+        Removes specified IDs
+            Parameters:
+                ids (list): IDs to remove
+            Raises:
+                SyntaxError if not list
+        """
+        if isinstance(ids, list):
+            for _id in ids:
+                self._ids.remove(_id)
+        else:
+            raise SyntaxError(f"Expected `list` got {type(ids)}")
+
+    def remove_ids(self, id):
+        """
+        Removes a specified ID
+            Parameters:
+                id (any): ID to remove
+        """
+        self._ids.remove(id)
 
     def create_file(self, key: str, default = "", wipe: bool = False):
         """
@@ -33,7 +112,7 @@ class Reader:
             Returns:
                 Success (bool): Did it succeed
         """
-        if Path(f'{self.directory}/data_{key}.json').is_file() and not wipe: # allows for wiping of the config
+        if self._file_check(key) and not wipe: # allows for wiping of the config
             logging.debug(f'Detected {key} but file exist and wipe flag is not set')
             return False
 
@@ -62,7 +141,7 @@ class Reader:
         data = {}
         id= str(id)
 
-        if not Path(f'{self.directory}/data_{key}.json').is_file():
+        if not self._file_check(key):
             return False
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
@@ -71,26 +150,8 @@ class Reader:
         try:
             return data[id]
         except KeyError:
-            logging.debug(f'Repairing {id} for {key}')
+            logging.warn(f'Repairing {id} for {key}')
             self._repair_id(id, key)
-
-    def _repair_id(self, id, key):
-        """
-        Inits a ID in a key with the default value
-        """
-        id = str(id)
-        if not Path(f'{self.directory}/data_{key}.json').is_file():
-            return False
-
-        with open(f'{self.directory}/data_{key}.json', 'r') as filein:
-            data = json.load(filein)
-
-        data[id] = self.__defaults[key]
-
-        with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
-            json.dump(data, fileout, indent=4)
-        logging.debug(f'Repaired {id} for {key} succesfully')
-        return True
 
     def write_file(self, id, key: str, value):
         """
@@ -105,7 +166,7 @@ class Reader:
         data = {}
         id = str(id)
 
-        if not Path(f'{self.directory}/data_{key}.json').is_file():
+        if not self._file_check(key):
             return False
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
@@ -129,7 +190,7 @@ class Reader:
         data = {}
         id = str(id)
 
-        if not Path(f'{self.directory}/data_{key}.json').is_file():
+        if not self._file_check(key):
             return False
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
@@ -150,7 +211,7 @@ class Reader:
             Returns:
                 Exist (bool): Does it exist
         """
-        return Path(f'{self.directory}/data_{key}.json').is_file()
+        return self._file_check(key)
 
 
     def dump(self, key: str):
@@ -162,6 +223,9 @@ class Reader:
                 data (dict): The JSON data
         """
         data = {}
+
+        if not self._file_check(key):
+            return None
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
             data = json.load(filein)
