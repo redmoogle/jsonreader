@@ -104,7 +104,10 @@ class Reader:
                 default (any): The value to put in as a placeholder
                 wipe (bool): Wipe the files forcefully
         """
-        self._file_check(key)
+        try:
+            self._file_check(key)
+        except FileNotFoundError:
+            pass # We'll be creating the file
 
         if not wipe: # allows for wiping of the config
             logging.info(f'Detected {key} but file exist and wipe flag is not set')
