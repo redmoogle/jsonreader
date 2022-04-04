@@ -24,25 +24,19 @@ class Reader:
         """
         Inits a ID in a key with the default value
         """
+        self._file_check(key)
         id = str(id)
-        if not Path(f'{self.directory}/data_{key}.json').is_file():
-            logging.error(f'{self.directory}/data_{key}.json does not exist')
-            return False
 
-        with open(f'{self.directory}/data_{key}.json', 'r') as filein:
-            data = json.load(filein)
-
-        data[id] = self.__defaults[key]
-
-        with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
-            json.dump(data, fileout, indent=4)
+        with open(f'{self.directory}/data_{key}.json', 'r+') as file:
+            data = json.load(file)
+            data[id] = self.__defaults[key]
+            json.dump(data, file, indent=4)
         logging.warn(f'Repaired {id} for {key} succesfully')
         return True
 
     def _file_check(self, key):
         if not Path(f'{self.directory}/data_{key}.json').is_file():
-            logging.error(f'{self.directory}/data_{key}.json does not exist')
-            return False
+            raise FileNotFoundError(f'{self.directory}/data_{key}.json does not exist')
         return True
 
     def update_ids(self, ids: list):
@@ -109,12 +103,12 @@ class Reader:
                 key (str): The `data_[key].json` to generate
                 default (any): The value to put in as a placeholder
                 wipe (bool): Wipe the files forcefully
-            Returns:
-                Success (bool): Did it succeed
         """
-        if self._file_check(key) and not wipe: # allows for wiping of the config
-            logging.debug(f'Detected {key} but file exist and wipe flag is not set')
-            return False
+        self._file_check(key)
+
+        if not wipe: # allows for wiping of the config
+            logging.info(f'Detected {key} but file exist and wipe flag is not set')
+            return
 
         data = {}
 
@@ -127,7 +121,6 @@ class Reader:
         with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
         logging.debug(f'Created {key} using {default} as the default')
-        return True
 
     def read_file(self, id, key: str):
         """
@@ -138,11 +131,9 @@ class Reader:
             Returns:
                 data(any): The data for that key/id pair
         """
+        self._file_check(key)
         data = {}
         id= str(id)
-
-        if not self._file_check(key):
-            return False
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
             data = json.load(filein)
@@ -160,23 +151,15 @@ class Reader:
                 id (str/int): ID to write to
                 key (str): The key to modify
                 value (any): The value to write for that key/id pair
-            Returns:
-                Success (bool): Did it succeed
         """
+        self._file_check(key)
         data = {}
         id = str(id)
 
-        if not self._file_check(key):
-            return False
-
-        with open(f'{self.directory}/data_{key}.json', 'r') as filein:
-            data = json.load(filein)
-
-        data[id] = value
-
-        with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
-            json.dump(data, fileout, indent=4)
-        return True
+        with open(f'{self.directory}/data_{key}.json', 'r+') as file:
+            data = json.load(file)
+            data[id] = value
+            json.dump(data, file, indent=4)
 
     def remove(self, id, key: str):
         """
@@ -184,35 +167,15 @@ class Reader:
             Parameters:
                 id (str/int): ID to remove
                 key (str): The key to modify
-            Returns:
-                Success (bool): Did it succeed
         """
+        self._file_check(key)
         data = {}
         id = str(id)
 
-        if not self._file_check(key):
-            return False
-
-        with open(f'{self.directory}/data_{key}.json', 'r') as filein:
-            data = json.load(filein)
-
-        data.pop(id)
-
-        with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
-            json.dump(data, fileout, indent=4)
-
-        return True
-
-    def check_exist(self, key: str):
-        """
-        Checks if a JSON key has been generated yet
-            Parameters:
-                key (str): The key to check
-            Returns:
-                Exist (bool): Does it exist
-        """
-        return self._file_check(key)
-
+        with open(f'{self.directory}/data_{key}.json', 'r+') as file:
+            data = json.load(file)
+            data.pop(id)
+            json.dump(data, file, indent=4)
 
     def dump(self, key: str):
         """
@@ -222,10 +185,8 @@ class Reader:
             Returns:
                 data (dict): The JSON data
         """
+        self._file_check(key)
         data = {}
-
-        if not self._file_check(key):
-            return None
 
         with open(f'{self.directory}/data_{key}.json', 'r') as filein:
             data = json.load(filein)
