@@ -4,6 +4,8 @@ Data Storage and Retrieval from JSON objects with ID's
 from pathlib import Path
 import logging
 
+import random
+
 try:
     import ujson as json
 except ImportError:  # Fall back
@@ -30,6 +32,8 @@ class Reader:
         with open(f'{self.directory}/data_{key}.json', 'r+') as file:
             data = json.load(file)
             data[id] = self.__defaults[key]
+            file.seek(0)
+            file.truncate(0)
             json.dump(data, file, indent=4)
         logging.warn(f'Repaired {id} for {key} succesfully')
         return True
@@ -162,6 +166,8 @@ class Reader:
         with open(f'{self.directory}/data_{key}.json', 'r+') as file:
             data = json.load(file)
             data[id] = value
+            file.seek(0)
+            file.truncate(0)
             json.dump(data, file, indent=4)
 
     def remove(self, id, key: str):
@@ -178,6 +184,8 @@ class Reader:
         with open(f'{self.directory}/data_{key}.json', 'r+') as file:
             data = json.load(file)
             data.pop(id)
+            file.seek(0)
+            file.truncate(0)
             json.dump(data, file, indent=4)
 
     def dump(self, key: str):
