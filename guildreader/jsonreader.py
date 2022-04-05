@@ -3,24 +3,21 @@ Data Storage and Retrieval from JSON objects with ID's
 """
 from pathlib import Path
 import logging
-
-import random
-
 try:
     import ujson as json
 except ImportError:  # Fall back
     logging.warning("`ujson` package is not installed large JSON objects will be accessed/modified slower")
-    import json
+    import json # Fallback incase ujson isn't installed
 
 class Reader:
     def __init__(self, directory: str, ids: list = list()) -> None:
-        if not (Path(directory).exists() and Path(directory).is_dir()):
+        if not (Path(directory).exists() and Path(directory).is_dir()): # Check if that directory exists
             Path(directory).mkdir(parents=True) # Create the directories if needed
-        self.directory = directory
+        self.directory = directory # Once verified make our directory pointer
         if not isinstance(ids, list):
             ids = list(ids) # Convert if its not a list
         self._ids = ids
-        self.__defaults = {}
+        self.__defaults = {} # Stores the default values for each key to fix incase of missing keys
 
     def _repair_id(self, id, key):
         """
@@ -28,13 +25,7 @@ class Reader:
         """
         self._file_check(key)
         id = str(id)
-
-        with open(f'{self.directory}/data_{key}.json', 'r+') as file:
-            data = json.load(file)
-            data[id] = self.__defaults[key]
-            file.seek(0)
-            file.truncate(0)
-            json.dump(data, file, indent=4)
+        self.write_file(id, key, self.__defaults[key]) # Write default value to ID
         logging.warn(f'Repaired {id} for {key} succesfully')
         return True
 
