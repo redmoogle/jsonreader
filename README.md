@@ -1,92 +1,85 @@
 # JSON READER:
-#### DiscordPy GuildData Management Module
-
-## Important Info:
-
-A /data folder must exist
+#### JSON Data Management Module
 
 ## Common Terms:
 
-key: file name to save/pull from (Stored as guild_KEY.json)
-guild: ID of the guild (automatically turned into a string)
+key: file name to save/pull from (Stored as data_[key].json)
 
-## Functions
+# CLS: Reader(directory, ids: list)
 
-### create_file()
+  ### create_file()
 
-#### Creates a Key
-#### Returns: Success(T/F)
+  #### Creates a Key
+  #### Returns: Success(T/F)
 
-ex.
-```
-if(guildreader.create_file(self.bot, "mutes", {}))
-```
+  ex.
+  ```
+  reader.create_file("mutes", {}))
+  ```
 
-* bot: Bot Instance
-* key: File/Key to make
-* default: Default value stored for each guild
-* wipe: Wipes the file if it exists
+  * key: File/Key to make
+  * default: Default value stored for each id
+  * wipe: Wipes the file if it exists
 
-### read_file()
+  ### read_file()
 
-ex.
-```
-data = guildreader.read_file(ctx.guild.id, "mutes")
-data[USER] = int(time.time+300)
-```
+  #### Read a Key from a ID
+  #### Returns: JSON for that ID
 
-#### Read a Key from a guild ID
-#### Returns: JSON for that guild
+  ex.
+  ```
+  data = reader.read_file(id, "mutes")
+  data[USER] = int(time.time+300)
+  ```
 
-* guild: ID of the guild
-* key: File/Key to read
+  * id: ID to read
+  * key: File/Key to read
 
-### write_file()
+  ### write_file()
 
-ex.
-```
-guildreader.write_file(ctx.guild.id, "mutes", data)
-```
+  #### Write to a key
+  #### Returns: Success(T/F)
 
-#### Write to a key
-#### Returns: Success(T/F)
+  ex.
+  ```
+  reader.write_file(id, "mutes", data)
+  ```
 
-* guild: ID of the guild
-* key: File/Key to read
-* value: Modified Value
+  * ID: ID to write to
+  * key: File/Key to write to
+  * value: Modified Value
 
-### remove()
+  ### remove()
 
-#### Remove a guild from a Key
-#### Returns: Success(T/F)
+  #### Remove a id from a key
+  #### Returns: Success(T/F)
 
-ex.
-```
-def on_guild_remove(self, guild):
-  guildreader.remove(guild.id, "mutes")
-```
+  ex.
+  ```
+    reader.remove(id, "mutes")
+  ```
 
-* guild: ID of the guild
-* key: File/Key to remove guild from
+  * id: ID to remove
+  * key: File/Key to remove id from
 
-### check_exist()
+  ### check_exist()
 
-```
-if(guildreader.check_exists("mutes"))
-```
+  #### Checks if a Key exists
+  #### Returns: Success(T/F)
 
-#### Checks if a Key exists
-#### Returns: Success(T/F)
+  ```
+  reader.check_exists("mutes")
+  ```
 
-* key: Check the existance of a key/file
+  * key: Check the existance of a key/file
 
-### dump()
+  ### dump()
 
-```
-json = guildreader.dump("mutes")
-```
+  #### Dumps the entire JSON
+  #### Returns: JSON of the Key
 
-#### Dumps the entire JSON
-#### Returns: JSON of the Key
+  ```
+  json = reader.dump("mutes")
+  ```
 
-* key: Key to dump full json from
+  * key: Key to dump json from
