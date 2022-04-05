@@ -26,7 +26,7 @@ class Reader:
         self._file_check(key)
         id = str(id)
         self.write_file(id, key, self.__defaults[key]) # Write default value to ID
-        logging.warn(f'Repaired {id} for {key} succesfully')
+        logging.warning(f'Repaired {id} for {key} succesfully')
         return self.__defaults[key]
 
     def _file_check(self, key):
@@ -138,7 +138,7 @@ class Reader:
         try:
             return data[id]
         except KeyError:
-            logging.warn(f'Repairing {id} for {key}')
+            logging.warning(f'Repairing {id} for key {key}')
             return self._repair_id(id, key)
 
     def write_file(self, id, key: str, value):
