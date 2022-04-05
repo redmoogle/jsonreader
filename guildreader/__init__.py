@@ -1,1 +1,1 @@
-from .jsonreader import *
+from .jsonreader import Reader
