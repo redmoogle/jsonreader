@@ -44,6 +44,16 @@ class ReadWrite(unittest.TestCase):
             data = self.reader.read_file(guild.id, "test")
             assert data == "rewrite"
 
+    def step5(self):
+        gld = FakeGuild()
+        self.bot.guilds += [gld]
+        for guild in self.bot.guilds:
+            data = self.reader.read_file(guild.id, "test")
+            if(guild.id == gld.id):
+                assert data == "Yes"
+            else:
+                assert data == "rewrite"
+
     def _steps(self):
         for name in dir(self):  # dir() result is implicitly sorted
             if name.startswith("step"):
