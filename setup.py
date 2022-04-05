@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name='guildreader',
-    version='2.0.1',
+    version='2.0.2',
     author='Redmoogle',
     author_email='dakotamew@gmail.com',
     description='JSON Data Management Module',

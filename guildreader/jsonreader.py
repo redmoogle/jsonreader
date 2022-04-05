@@ -99,6 +99,7 @@ class Reader:
                 default (any): The value to put in as a placeholder
                 wipe (bool): Wipe the files forcefully
         """
+        self.__defaults[key] = default # Store what the default was so we can repair if a id is missing
         try:
             self._file_check(key)
             if not wipe: # allows for wiping of the config
@@ -112,8 +113,6 @@ class Reader:
         for id in self._ids:
             _id = str(id) # Make sure its a str for consistency
             data[_id] = default # Init with default value
-
-        self.__defaults[key] = default # Store what the default was so we can repair if a id is missing
 
         with open(f'{self.directory}/data_{key}.json', 'w') as fileout:
             json.dump(data, fileout, indent=4)
