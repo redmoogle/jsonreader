@@ -110,12 +110,11 @@ class Reader:
         """
         try:
             self._file_check(key)
+            if not wipe: # allows for wiping of the config
+                logging.info(f'Detected {key} but file exist and wipe flag is not set')
+                return
         except FileNotFoundError:
             pass # We'll be creating the file
-
-        if not wipe: # allows for wiping of the config
-            logging.info(f'Detected {key} but file exist and wipe flag is not set')
-            return
 
         data = {}
 
