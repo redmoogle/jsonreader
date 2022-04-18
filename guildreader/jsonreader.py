@@ -6,7 +6,7 @@ import logging
 try:
     import ujson as json
 except ImportError:  # Fall back
-    logging.warning("`ujson` package is not installed large JSON objects will be accessed/modified slower")
+    logging.warning("module `ujson` is not installed large JSON objects will be accessed/modified slower")
     import json # Fallback incase ujson isn't installed
 
 class Reader:
@@ -56,8 +56,7 @@ class Reader:
                 SyntaxError if not list
         """
         if isinstance(ids, list):
-            for _id in ids:
-                self._ids.append(_id)
+            self._ids += ids
         else:
             raise SyntaxError(f"Expected `list` got {type(ids)}")
 
@@ -103,7 +102,7 @@ class Reader:
         try:
             self._file_check(key)
             if not wipe: # allows for wiping of the config
-                logging.info(f'Detected {key} but file exist and wipe flag is not set')
+                logging.debug(f'Detected {key} but the file already exists and the wipe flag is not set')
                 return
         except FileNotFoundError:
             pass # We'll be creating the file
